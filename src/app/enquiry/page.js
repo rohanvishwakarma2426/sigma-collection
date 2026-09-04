@@ -1,11 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
-export default function EnquiryPage() {
+function EnquiryForm() {
   const searchParams = useSearchParams();
   const productSlug = searchParams.get("product");
 
@@ -98,7 +99,7 @@ export default function EnquiryPage() {
     return <p className="p-4 text-sm text-gray-400">No product selected.</p>;
   }
 
-    if (submitted) {
+  if (submitted) {
     return (
       <main className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-sm w-full text-center">
@@ -128,7 +129,9 @@ export default function EnquiryPage() {
   return (
     <main className="min-h-screen bg-white pb-10">
       <header className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3">
-        <Link href={`/products/${productSlug}`} className="text-lg">Back</Link>
+        <Link href={`/products/${productSlug}`} className="text-lg">
+          Back
+        </Link>
         <h1 className="text-sm font-medium">Enquiry</h1>
       </header>
 
@@ -213,5 +216,13 @@ export default function EnquiryPage() {
         </button>
       </form>
     </main>
+  );
+}
+
+export default function EnquiryPage() {
+  return (
+    <Suspense fallback={<p className="p-4 text-sm text-gray-400">Loading...</p>}>
+      <EnquiryForm />
+    </Suspense>
   );
 }
